@@ -1,29 +1,33 @@
- int celebrity(vector<vector<int> >& mat) {
-        int n=mat.size();
-        int m=mat[0].size();
+int celebrity(vector<vector<int> >& grid) {
         
-        int top=0,down=n-1;
+        int n=grid.size();
+        int m=grid[0].size();
         
-        while(top<down)
+        int top=0,bottom=n-1;
+        
+        while(top<bottom)
         {
-            if(mat[top][down]==1) top++;  // top can't be a celebrity
-            else if(mat[down][top]==1) down--; // down can't be a celebrity
-            else 
+            if(grid[top][bottom]==1) top++;      // top can't be a celebrity
+            else if(grid[bottom][top]==1) bottom--;    // bottom can't be a celebrity
+            else
             {
                 top++;
-                down--;   // no one can be a celebrity
+                bottom--;         // no one can be a celebrity
             }
         }
         
         
-        if(top>down) return -1;
+        if(top>bottom) return false;
+        
+        // now top==bottom
         
         for(int i=0;i<n;i++)
         {
-            if(i==top or (mat[top][i]==0 and mat[i][top]==1)) continue;
-            else return -1;
+            if(i==top) continue;
+            if(grid[i][top]==1 and grid[top][i]==0) continue;   // i knows top but top doesn't know i 
+            
+            return -1;
         }
         
-        
-        return top;  // or bottom, anything
+        return top;   // or bottom anything
     }
