@@ -1,0 +1,51 @@
+class Solution {
+public:
+
+    // Helper function to count subarrays with sum equal to target
+    int SubarraySum(vector<int>& temp, int target) {
+        int n = temp.size();
+        map<int, int> mp;
+        mp[0] = 1;  // Initialize the map with balance 0 having 1 occurrence
+        int sum = 0;
+        int cnt = 0;
+
+        for (int i = 0; i < n; i++) {
+            sum += temp[i];
+            int rem = sum - target;
+           
+            if (mp.find(rem) != mp.end()) {
+                cnt += mp[rem];
+            }
+            mp[sum]++;
+        }
+
+        return cnt;
+    }
+
+    // Main function to find number of submatrices with sum equal to target
+    int numSubmatrixSumTarget(vector<vector<int>>& matrix, int target) {
+         
+         int ans = 0;
+
+         int n = matrix.size();  // Number of rows in matrix
+         int m = matrix[0].size();  // Number of columns in matrix
+
+         // Iterate over all possible starting rows of submatrices
+         for (int i = 0; i < n; i++) {
+             vector<int> temp(m, 0);  // Temporary array to hold cumulative sums
+
+             // Iterate over all possible ending rows of submatrices
+             for (int row = i; row < n; row++) {
+                // Update temporary array with cumulative sums of columns from row `i` to `row`
+                for (int col = 0; col < m; col++) {
+                    temp[col] += matrix[row][col];
+                }
+
+                // Add the count of subarrays with sum `target` to `ans`
+                ans += SubarraySum(temp, target);
+             }
+         }
+
+         return ans;
+    }
+};
