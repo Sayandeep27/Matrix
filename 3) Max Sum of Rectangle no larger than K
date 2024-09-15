@@ -49,9 +49,28 @@ public:
 
     int maxSumSubmatrix(vector<vector<int>>& grid, int k) {
         
-        int index=0;
+        int n=grid.size();
+        int m=grid[0].size();
 
-        return solve(index,grid,k);
+        int ans=INT_MIN;
+
+
+        for(int index=0;index<n;index++)
+        {
+            vector<int>temp(m,0);
+
+            for(int i=index;i<n;i++)
+            {
+                for(int j=0;j<m;j++)
+                {
+                    temp[j]+=grid[i][j];
+                }
+
+                 ans=max(ans,sub_sum(temp,k));
+            }
+        }
+
+        return ans;
 
     }
 };
